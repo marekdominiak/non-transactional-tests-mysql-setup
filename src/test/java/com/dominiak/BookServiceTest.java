@@ -3,6 +3,7 @@ package com.dominiak;
 
 import com.dominiak.model.Book;
 import com.dominiak.service.BookService;
+import com.dominiak.service.BookServiceNoTx;
 import org.hibernate.LazyInitializationException;
 import org.junit.After;
 import org.junit.Assert;
@@ -24,6 +25,9 @@ public class BookServiceTest extends BaseJpaSpringContextTest {
 
     @Resource
     private BookService bookService;
+
+    @Resource
+    private BookServiceNoTx bookServiceNoTx;
 
     private ExecutorService executorService;
 
@@ -65,7 +69,7 @@ public class BookServiceTest extends BaseJpaSpringContextTest {
                 return bookService.findBy(someBook.getId());
             }
         }).get();
-        Assert.assertEquals(foundBook.getAuthor(), "Bruce Wayne");
+        Assert.assertEquals("Bruce Wayne", foundBook.getAuthor());
     }
 
     @org.junit.Test
@@ -82,9 +86,18 @@ public class BookServiceTest extends BaseJpaSpringContextTest {
         shouldSaveBookToDatabase();
     }
 
+    @org.junit.Test
+    public void shouldNotSaveBookToDbWithoutTx() throws Exception {
+        assertThatNoOfBooksInDatabaseIs(43);
+        final Book someBook = new Book();
+        someBook.setAuthor("Naughty Bear");
+        bookServiceNoTx.saveNoTx(someBook);
+        assertThatNoOfBooksInDatabaseIs(43);
+    }
+
     private void assertThatNoOfBooksInDatabaseIs(int noOfBooksInDatabase) {
         List<Book> books = bookService.listBooks(new PageRequest(0, 10000)).getContent();
-        Assert.assertEquals(books.size(), noOfBooksInDatabase);
+        Assert.assertEquals(noOfBooksInDatabase, books.size());
     }
 }
 

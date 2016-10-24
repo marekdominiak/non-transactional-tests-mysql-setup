@@ -9,7 +9,7 @@
     <version>1.0</version>
 
     <properties>
-        <springframework.version>3.1.0.RELEASE</springframework.version>
+        <springframework.version>3.2.14.RELEASE</springframework.version>
         <project.build.sourceEncoding>UTF8</project.build.sourceEncoding>
     </properties>
 

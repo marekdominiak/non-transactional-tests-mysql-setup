@@ -2,9 +2,11 @@ package com.dominiak;
 
 import org.junit.After;
 import org.junit.Before;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 
+@Transactional
 public class BaseJpaSpringContextTest {
 
     static {
