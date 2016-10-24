@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 
-@Transactional
 public class BaseJpaSpringContextTest {
 
     static {
